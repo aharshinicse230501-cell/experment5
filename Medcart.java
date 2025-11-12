@@ -1,6 +1,5 @@
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.utimport java.util.Scanner;
 
 class Medicine {
     int id;
@@ -10,7 +9,7 @@ class Medicine {
     Medicine(int id, String name, double price) {
         this.id = id;
         this.name = name;
-        this.price = price;
+       
     }
 }
 
