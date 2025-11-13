@@ -21,46 +21,63 @@ public class MedCart {
 
     public static void main(String[] args) {
         initializeMedicines();
-        System.out.println("Welcome to MedCart!");
+        System.out.println("🩺 Welcome to MedCart!");
         boolean running = true;
+
         while (running) {
             System.out.println("\nSelect an option:");
             System.out.println("1. View Medicines");
             System.out.println("2. View Cart");
             System.out.println("3. Checkout");
             System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+
+            // Validate input
+            if (!scanner.hasNextInt()) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.nextLine();
+                continue;
+            }
 
             int choice = scanner.nextInt();
-            scanner.nextLine();
+            scanner.nextLine(); // consume newline
 
             switch (choice) {
                 case 1 -> viewMedicines();
                 case 2 -> viewCart();
                 case 3 -> checkout();
                 case 4 -> {
-                    System.out.println("Exiting MedCart. Goodbye!");
+                    System.out.println("Exiting MedCart. Goodbye! 👋");
                     running = false;
                 }
                 default -> System.out.println("Invalid choice. Try again.");
             }
         }
+        scanner.close();
     }
 
     private static void initializeMedicines() {
-        medicines.add(new Medicine(1, "Paracetamol", 10));
-        medicines.add(new Medicine(2, "Ibuprofen", 15));
-        medicines.add(new Medicine(3, "Aspirin", 12));
-        medicines.add(new Medicine(4, "Vitamin C", 8));
+        medicines.add(new Medicine(1, "Paracetamol", 10.0));
+        medicines.add(new Medicine(2, "Ibuprofen", 15.0));
+        medicines.add(new Medicine(3, "Aspirin", 12.0));
+        medicines.add(new Medicine(4, "Vitamin C", 8.0));
     }
 
     private static void viewMedicines() {
-        System.out.println("\nAvailable Medicines:");
+        System.out.println("\n💊 Available Medicines:");
         for (Medicine med : medicines) {
             System.out.println(med.id + ". " + med.name + " - ₹" + med.price);
         }
-        System.out.println("Enter medicine ID to add to cart (0 to go back):");
+        System.out.print("Enter medicine ID to add to cart (0 to go back): ");
+
+        if (!scanner.hasNextInt()) {
+            System.out.println("Invalid input. Returning to menu.");
+            scanner.nextLine();
+            return;
+        }
+
         int medId = scanner.nextInt();
-        scanner.nextLine();
+        scanner.nextLine(); // consume newline
         if (medId == 0) return;
 
         Medicine selected = medicines.stream()
@@ -70,21 +87,21 @@ public class MedCart {
 
         if (selected != null) {
             cart.add(selected);
-            System.out.println(selected.name + " added to cart.");
+            System.out.println("✅ " + selected.name + " added to cart.");
         } else {
-            System.out.println("Invalid medicine ID.");
+            System.out.println("❌ Invalid medicine ID.");
         }
     }
 
     private static void viewCart() {
         if (cart.isEmpty()) {
-            System.out.println("\nYour cart is empty.");
+            System.out.println("\n🛒 Your cart is empty.");
             return;
         }
-        System.out.println("\nYour Cart:");
+        System.out.println("\n🛍️ Your Cart:");
         double total = 0;
         for (Medicine med : cart) {
-            System.out.println(med.name + " - ₹" + med.price);
+            System.out.println("- " + med.name + " - ₹" + med.price);
             total += med.price;
         }
         System.out.println("Total: ₹" + total);
@@ -96,8 +113,9 @@ public class MedCart {
             return;
         }
         viewCart();
-        System.out.println("\nChecking out...");
+        System.out.println("\nProcessing checkout...");
         cart.clear();
-        System.out.println("Thank you for shopping at MedCart!");
+        System.out.println("✅ Thank you for shopping at MedCart!");
     }
 }
+
